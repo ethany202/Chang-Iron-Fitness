@@ -1,24 +1,51 @@
-require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const express = require('express');
+const connectToDatabase = require('./services/mongoConnection');
 
-const uri = process.env.MONGO_URI;
+const app = express();
+const port = process.env.PORT;
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-async function run() {
-  try {
+// Middleware for parsing JSON bodies
+app.use(express.json());
 
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
+async function startServer() {
+  const client = await connectToDatabase();
+  const db = client.db("Users");
+  const collection = db.collection("Bundles");
 
-    await client.close();
-  }
+  app.get('/', async (req, res) => {
+    const data = await collection.find({}).toArray();
+    res.send(data);
+  });
+
+  app.post("/addUserBundle", async (req, res) => {
+    try {
+      const { userID, bundles } = req.body;
+
+      // Validation
+      if (!userID || !bundles) {
+        return res.status(400).json({ error: "All fields are required." });
+      }
+
+      // Create a new document
+      const newUser = {
+        userID,
+        bundles,
+      };
+      const result = await collection.insertOne(newUser);
+
+      res.status(201).json({
+        message: "User added successfully",
+        insertedId: result.insertedId,
+      });
+    } catch (error) {
+      console.error("Error adding user:", error);
+      res.status(500).send("Error adding user", error);
+    }
+  });
+
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
 }
-run().catch(console.dir);
+
+startServer().catch(console.error);
