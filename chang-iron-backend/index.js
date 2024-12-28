@@ -2,7 +2,7 @@ const express = require('express')
 
 const stripePayment = require('./src/services/stripePayment.js')
 const connectToDatabase = require('./src/services/mongoConnection.js');
-
+const mysql = require('./src/services/mysqlConnection.js')
 const app = express();
 const port = process.env.PORT;
 
@@ -14,10 +14,29 @@ async function startServer() {
   const db = client.db("Users");
   const collection = db.collection("Bundles");
 
-  app.get('/', async (req, res) => {
-    const data = await collection.find({}).toArray();
-    return res.send(data);
-  });
+  // app.get('/', async (req, res) => {
+  //   try{
+  //     //connection to MongoDB database
+  //     const data = await collection.find({}).toArray();
+
+  //     //connection to mySQL specifically user_cred database
+  //     const user_creds = 'SELECT * FROM user_creds';
+  //     const results = await mysql.executeQuery(user_creds);
+
+  //     const combinedData = {
+  //       mongoData: data,
+  //       userCreds: results,
+  //   };
+
+  //   // Send the combined data as JSON
+  //   res.status(200).json(combinedData);
+
+  //   }catch (error) {
+  //       console.error('Error fetching data:', error);
+  //       res.status(500).send('Error fetching data');
+  //   }
+
+  // });
 
   app.post("/add-user-bundle", async (req, res) => {
     try {
