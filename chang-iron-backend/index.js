@@ -1,5 +1,7 @@
-const express = require('express');
-const connectToDatabase = require('./src/services/mongoConnection');
+const express = require('express')
+
+const stripePayment = require('./src/services/stripePayment.js')
+const connectToDatabase = require('./src/services/mongoConnection.js');
 
 const app = express();
 const port = process.env.PORT;
@@ -14,7 +16,7 @@ async function startServer() {
 
   app.get('/', async (req, res) => {
     const data = await collection.find({}).toArray();
-    res.send(data);
+    return res.send(data);
   });
 
   app.post("/add-user-bundle", async (req, res) => {
@@ -33,15 +35,29 @@ async function startServer() {
       };
       const result = await collection.insertOne(newUser);
 
-      res.status(201).json({
+      return res.status(201).json({
         message: "User added successfully",
         insertedId: result.insertedId,
       });
     } catch (error) {
       console.error("Error adding user:", error);
-      res.status(500).send("Error adding user", error);
+      return res.status(500).send("Error adding user", error);
     }
   });
+
+  app.post("/pull-checkout-link", async (req, res) => {
+    try {
+
+      const { imageLink, productName, priceAmount } = req.body
+      const checkoutLink = await stripePayment.createCheckout(productName, priceAmount)
+
+      return res.status(200).json({ checkoutLink: checkoutLink })
+    }
+    catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: error })
+    }
+  })
 
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
