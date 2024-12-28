@@ -1,5 +1,5 @@
 const express = require('express');
-const connectToDatabase = require('./services/mongoConnection');
+const connectToDatabase = require('./src/services/mongoConnection');
 
 const app = express();
 const port = process.env.PORT;
@@ -17,7 +17,7 @@ async function startServer() {
     res.send(data);
   });
 
-  app.post("/addUserBundle", async (req, res) => {
+  app.post("/add-user-bundle", async (req, res) => {
     try {
       const { userID, bundles } = req.body;
 
