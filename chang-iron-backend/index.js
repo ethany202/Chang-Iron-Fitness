@@ -1,7 +1,7 @@
 const express = require('express')
 
-const stripePayment = require('./src/services/stripe-payment')
-const connectToDatabase = require('./src/services/mongoConnection');
+const stripePayment = require('./src/services/stripePayment.js')
+const connectToDatabase = require('./src/services/mongoConnection.js');
 
 const app = express();
 const port = process.env.PORT;
