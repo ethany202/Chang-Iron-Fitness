@@ -1,0 +1,29 @@
+.credentials-header {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 4rem 0;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+.credentials-inputs {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.credentials-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.credentials-input {
+    margin: 1rem 0;
+    padding: 0.5rem 0.5rem;
+    border: solid 0.1px;
+    border-radius: 0.3rem;
+}
