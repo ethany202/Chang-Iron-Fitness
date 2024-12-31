@@ -1,5 +1,6 @@
 const express = require('express')
-
+const bcrypt = require('bcrypt')
+const crypto = require('crypto');
 const stripePayment = require('./src/services/stripePayment.js')
 const connectToDatabase = require('./src/services/mongoConnection.js');
 const mysql = require('./src/services/mysqlConnection.js')
@@ -77,6 +78,55 @@ async function startServer() {
       return res.status(500).json({ error: error })
     }
   })
+
+  app.post("/register", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      const existingUser = await mysql.executeQuery(`SELECT * FROM user_creds WHERE user_email = '${email}'`);
+      if (existingUser.length > 0) {
+        return res.status(400).json({ error: 'Email already exists' });
+      }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userId = crypto.randomBytes(5).toString('hex'); // 5 bytes = 10 hex characters
+
+    
+        const insertQuery = `INSERT INTO user_creds (user_id, user_email, user_password) VALUES ('${userId}', '${email}', '${hashedPassword}')`;
+        await mysql.executeQuery(insertQuery);
+
+        res.status(201).send({ message: 'User registered successfully', userId });
+
+  } catch (error) {
+    console.log(error); 
+    res.status(500).json({ error: 'Internal server error' });
+  }
+  })
+
+  app.post('/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const [user]  = await mysql.executeQuery(`SELECT * FROM user_creds WHERE user_email = '${email}'`);
+      if (user.length === 0) {
+        
+        return res.status(400).json({ error: 'Email does not exist' });
+      }
+
+      const passwordMatch = await bcrypt.compare(password, user.user_password);
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Password does not match' });
+      }
+  
+      // // Generate JWT token
+      // const token = jwt.sign({ email: user.user_email }, 'secret');
+      // res.status(200).json({ token });
+
+      res.status(201).send({ message: 'User logged in successfully'});
+
+    } catch (error) {
+      console.log(error); 
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
