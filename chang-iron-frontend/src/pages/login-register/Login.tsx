@@ -30,19 +30,22 @@ export default function Login() {
 
     return (
         <div className="login-page">
-            <div className="credentials-header">
-                <h1>Login</h1>
-            </div>
-
             <div className="credentials-inputs">
-                <form onSubmit={event => submitLogin(event)} className="credentials-form">
-                    <input className="credentials-input" placeholder="Email" onChange={event => setEmail(event.target.value)} />
-                    <input className="credentials-input" placeholder="Password" type="password" onChange={event => setPassword(event.target.value)} />
-                    <button className="credentials-button">
-                        <p>Login</p>
-                    </button>
-                </form>
-
+                <div className="credentials-background">
+                    <h2 className="credentials-welcome">Welcome!</h2>
+                    <form onSubmit={event => submitLogin(event)} className="credentials-form">
+                        <input className="credentials-input" placeholder="Email" onChange={event => setEmail(event.target.value)} />
+                        <input className="credentials-input" placeholder="Password" type="password" onChange={event => setPassword(event.target.value)} />
+                        <a href="register" className="create-account">
+                            <p className="">Create account</p>
+                        </a>
+                        <div className="credentials-btn-div">
+                            <button className="credentials-button">
+                                <p>LOGIN</p>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     )
