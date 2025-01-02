@@ -82,6 +82,13 @@ async function startServer() {
   })
 
   /**
+   * 
+   */
+  app.post("/send-email", async (req, res) => {
+
+  })
+
+  /**
    * Endpoint for user registration
    */
   app.post("/register", async (req, res) => {
