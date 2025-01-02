@@ -1,0 +1,7 @@
+.slideshow-background {
+    display: flex;
+    width: 100%;
+    height: 300px;
+    background-size: contain;
+    /* background-repeat: no-repeat; */
+}

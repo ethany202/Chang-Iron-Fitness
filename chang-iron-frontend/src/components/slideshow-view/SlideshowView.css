@@ -1,0 +1,17 @@
+/* .slideshow-image {
+    height: 500px;
+    width: 100%;
+} */
+.slick-dots {
+    position: relative !important;
+    bottom: 2.5rem !important;
+}
+
+.slick-dots li button:before {
+    font-size: 12px !important;
+    color: white !important;
+}
+
+.slick-slider.slick-initialized {
+    height: 619px;
+}

@@ -4,11 +4,13 @@ const crypto = require('crypto');
 const stripePayment = require('./src/services/stripePayment.js')
 const connectToDatabase = require('./src/services/mongoConnection.js');
 const mysql = require('./src/services/mysqlConnection.js')
+const cors = require('cors')
 const app = express();
 const port = process.env.PORT;
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
+app.use(cors())
 
 async function startServer() {
   const client = await connectToDatabase();
@@ -79,6 +81,16 @@ async function startServer() {
     }
   })
 
+  /**
+   * 
+   */
+  app.post("/send-email", async (req, res) => {
+
+  })
+
+  /**
+   * Endpoint for user registration
+   */
   app.post("/register", async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -87,27 +99,30 @@ async function startServer() {
       if (existingUser.length > 0) {
         return res.status(400).json({ error: 'Email already exists' });
       }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const userId = crypto.randomBytes(5).toString('hex'); // 5 bytes = 10 hex characters
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const userId = crypto.randomBytes(5).toString('hex'); // 5 bytes = 10 hex characters
 
-    
-        const insertQuery = `INSERT INTO user_creds (user_id, user_email, user_password) VALUES ('${userId}', '${email}', '${hashedPassword}')`;
-        await mysql.executeQuery(insertQuery);
 
-        res.status(201).send({ message: 'User registered successfully', userId });
+      const insertQuery = `INSERT INTO user_creds (user_id, user_email, user_password) VALUES ('${userId}', '${email}', '${hashedPassword}')`;
+      await mysql.executeQuery(insertQuery);
 
-  } catch (error) {
-    console.log(error); 
-    res.status(500).json({ error: 'Internal server error' });
-  }
+      res.status(201).send({ message: 'User registered successfully', userId });
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   })
 
+  /**
+   * Endpoint for user login
+   */
   app.post('/login', async (req, res) => {
     try {
       const { email, password } = req.body;
-      const [user]  = await mysql.executeQuery(`SELECT * FROM user_creds WHERE user_email = '${email}'`);
+      const [user] = await mysql.executeQuery(`SELECT * FROM user_creds WHERE user_email = '${email}'`);
       if (user.length === 0) {
-        
+
         return res.status(400).json({ error: 'Email does not exist' });
       }
 
@@ -115,15 +130,15 @@ async function startServer() {
       if (!passwordMatch) {
         return res.status(401).json({ error: 'Password does not match' });
       }
-  
+
       // // Generate JWT token
       // const token = jwt.sign({ email: user.user_email }, 'secret');
       // res.status(200).json({ token });
 
-      res.status(201).send({ message: 'User logged in successfully'});
+      res.status(200).send({ message: 'User logged in successfully' });
 
     } catch (error) {
-      console.log(error); 
+      console.log(error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
