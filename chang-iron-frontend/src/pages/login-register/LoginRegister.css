@@ -27,3 +27,7 @@ h1 {
     border: solid 0.1px;
     border-radius: 0.3rem;
 }
+
+.credentials-button {
+    margin: 1rem 0;
+}

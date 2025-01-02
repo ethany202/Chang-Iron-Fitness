@@ -12,15 +12,15 @@ export default function Login() {
         if (email.length > 0 && password.length > 0) {
             console.log(email)
             console.log(password)
-            // const response = await postLogin({
-            //     email: email,
-            //     password: password
-            // })
+            const response = await postLogin({
+                email: email,
+                password: password
+            })
 
-            // // Redirect if response.status === 200
-            // if (response.status === 200) {
-            //     redirectToHome()
-            // }
+            // Redirect if response.status === 200
+            if (response.status === 200) {
+                redirectToHome()
+            }
         }
     }
 
@@ -37,7 +37,7 @@ export default function Login() {
             <div className="credentials-inputs">
                 <form onSubmit={event => submitLogin(event)} className="credentials-form">
                     <input className="credentials-input" placeholder="Email" onChange={event => setEmail(event.target.value)} />
-                    <input className="credentials-input" placeholder="Password" onChange={event => setPassword(event.target.value)} />
+                    <input className="credentials-input" placeholder="Password" type="password" onChange={event => setPassword(event.target.value)} />
                     <button className="credentials-button">
                         <p>Login</p>
                     </button>

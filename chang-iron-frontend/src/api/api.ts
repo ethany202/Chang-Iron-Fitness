@@ -1,15 +1,14 @@
-const baseURL: string = process.env.REACT_APP_BACKEND_URL
+import axios from "axios";
+
+const api = axios.create({
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}/`,
+    timeout: 10000,
+});
+
 
 const postRequest = async (content: any, path: string) => {
     try {
-        const response = await fetch(`${baseURL}/${path}`, {
-            method: "POST",
-            body: content,
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8'
-            }
-        })
-
+        const response = await api.post(path, content)
         return response
     }
     catch (err) {
@@ -18,7 +17,7 @@ const postRequest = async (content: any, path: string) => {
     }
 }
 
-const postCheckoutLink = async (productInfo: {
+export const postCheckoutLink = async (productInfo: {
     productName: string,
     priceAmount: number
 }) => {
@@ -26,10 +25,20 @@ const postCheckoutLink = async (productInfo: {
     return await postRequest(productInfo, path)
 }
 
-const postLogin = async (userInfo: {
+export const postLogin = async (userInfo: {
     email: string,
     password: string
 }) => {
     const path = "login"
+    return await postRequest(userInfo, path)
+}
+
+export const postRegister = async (userInfo: {
+    userFirstName: string,
+    userLastName: string,
+    email: string,
+    password: string
+}) => {
+    const path = "register"
     return await postRequest(userInfo, path)
 }
