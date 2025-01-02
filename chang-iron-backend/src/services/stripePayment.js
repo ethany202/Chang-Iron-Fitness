@@ -3,8 +3,20 @@ require('dotenv').config();
 // Create a Stripe object with the API key
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_KEY);
+const PORT = process.env.PORT; 
 
-const createCheckout = async (productName, priceAmount) => {
+const createCheckout = async (user_id, productType, productName, productID, priceAmount, product) => {
+let url = `http://localhost:${PORT}/handle-purchase?user_id=${user_id}&product_type=${productType}&product_id=${productID}&amount=${priceAmount}&${productType}=${product}`;
+
+    // if (productType == "membership"){
+    //     url = `${url}&membership_status=${product}`;
+
+    // }
+    // else if (productType == "bundle"){
+    //     url = `${url}&bundles=${product}`;
+
+    // }
+
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         mode: "payment",
@@ -26,7 +38,8 @@ const createCheckout = async (productName, priceAmount) => {
             }
         ],
         // Change success URL to redirect to a page that performs POST request and adds payment record to SQL database
-        success_url: `https://youtube.com`,
+
+        success_url: `${url}&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `https://google.com`,
     })
 
