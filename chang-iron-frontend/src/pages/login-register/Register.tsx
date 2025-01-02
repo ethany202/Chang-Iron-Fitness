@@ -12,9 +12,7 @@ export default function Register() {
 
     const submitRegister = async (event) => {
         event.preventDefault()
-        if (email.length > 0 && password.length > 0) {
-            console.log(email)
-            console.log(password)
+        if (email.length > 0 && password.length > 0 && password == passwordConfirm) {
             const response = await postRegister({
                 userFirstName: userFirstName,
                 userLastName: userLastName,
@@ -23,7 +21,7 @@ export default function Register() {
             })
 
             // Redirect if response.status === 200
-            if (response.status === 200) {
+            if (response.status === 201) {
                 redirectToHome()
             }
         }
@@ -47,6 +45,7 @@ export default function Register() {
                     </div>
                     <input className="credentials-input" placeholder="Email" onChange={event => setEmail(event.target.value)} />
                     <input className="credentials-input" placeholder="Password" type="password" onChange={event => setPassword(event.target.value)} />
+                    <input className="credentials-input" placeholder="Confirm Password" type="password" onChange={event => setPasswordConfirm(event.target.value)} />
                     <button className="credentials-button">
                         <p>Register</p>
                     </button>
