@@ -5,15 +5,33 @@
     margin: 4rem 0;
 }
 
-h1 {
-    font-size: 48px;
+h2 {
+    font-size: 36px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 3rem;
 }
 
 .credentials-inputs {
     display: flex;
     width: 100%;
     justify-content: center;
-    margin: 1rem 0;
+    margin: 3rem 0;
+}
+
+.credentials-background {
+    background-color: #2B2B2B;
+    padding: 2rem 3rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0.5vw 1vw 0 black;
+    -moz-box-shadow: 0 2px 5px 0 black;
+    -webkit-box-shadow: 0 2px 5px 0 black;
+    width: 30%;
+}
+
+.credentials-welcome {
+    color: white;
+    font-weight: 400;
 }
 
 .credentials-form {
@@ -21,13 +39,62 @@ h1 {
     flex-direction: column;
 }
 
+input:focus {
+    outline-width: 0;
+    color: white;
+    border-bottom: white 2px solid;
+}
+
+.credentials-names {
+    display: flex;
+}
+
 .credentials-input {
     margin: 1rem 0;
-    padding: 0.5rem 0.5rem;
-    border: solid 0.1px;
-    border-radius: 0.3rem;
+    padding: 0.5rem 0rem;
+    border: none;
+    background-color: #2B2B2B;
+    font-size: 16px;
+    color: #FFFFFF80;
+    border-bottom: #2B2B2B 2px solid;
+}
+
+.create-account {
+    color: white;
+}
+
+.create-account:hover {
+    cursor: pointer;
+}
+
+.create-account::after {
+    color: white;
+}
+
+.create-account p {
+    font-size: 14px;
+}
+
+.credentials-btn-div {
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }
 
 .credentials-button {
     margin: 1rem 0;
+    width: fit-content;
+    padding: 0.2rem 1rem;
+    background-color: #FF9E00;
+    border: #FF9E00 1px solid;
+    border-radius: 5px;
+}
+
+.credentials-button p {
+    margin: 6px;
+    color: white;
+}
+
+.credentials-button:hover {
+    cursor: pointer;
 }

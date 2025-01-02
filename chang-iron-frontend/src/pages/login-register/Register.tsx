@@ -33,24 +33,27 @@ export default function Register() {
 
     return (
         <div className="register-page">
-            <div className="credentials-header">
-                <h1>New User Registration</h1>
-            </div>
-
             <div className="credentials-inputs">
-                <form onSubmit={event => submitRegister(event)} className="credentials-form">
-                    <div>
-                        <input className="credentials-input" placeholder="First Name" onChange={event => setUserFirstName(event.target.value)} />
-                        <input className="credentials-input" placeholder="Last Name" onChange={event => setUserLastName(event.target.value)} />
-                    </div>
-                    <input className="credentials-input" placeholder="Email" onChange={event => setEmail(event.target.value)} />
-                    <input className="credentials-input" placeholder="Password" type="password" onChange={event => setPassword(event.target.value)} />
-                    <input className="credentials-input" placeholder="Confirm Password" type="password" onChange={event => setPasswordConfirm(event.target.value)} />
-                    <button className="credentials-button">
-                        <p>Register</p>
-                    </button>
-                </form>
-
+                <div className="credentials-background">
+                    <h2 className="credentials-welcome">Registration</h2>
+                    <form onSubmit={event => submitRegister(event)} className="credentials-form">
+                        <div className="credentials-names">
+                            <input className="credentials-input" placeholder="First Name" onChange={event => setUserFirstName(event.target.value)} />
+                            <input className="credentials-input" placeholder="Last Name" onChange={event => setUserLastName(event.target.value)} />
+                        </div>
+                        <input className="credentials-input" placeholder="Email" onChange={event => setEmail(event.target.value)} />
+                        <input className="credentials-input" placeholder="Password" type="password" onChange={event => setPassword(event.target.value)} />
+                        <input className="credentials-input" placeholder="Confirm Password" type="password" onChange={event => setPasswordConfirm(event.target.value)} />
+                        <a href="login" className="create-account">
+                            <p className="">Already have an account?</p>
+                        </a>
+                        <div className="credentials-btn-div">
+                            <button className="credentials-button">
+                                <p>REGISTER</p>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     )
