@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_slideshows",
+  "info": {
+    "singularName": "home-slideshow",
+    "pluralName": "home-slideshows",
+    "displayName": "Home-Slideshow"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "BackgroundImages": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    }
+  }
+}
