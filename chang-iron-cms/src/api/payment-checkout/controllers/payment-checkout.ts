@@ -9,12 +9,17 @@ module.exports = {
      */
     generateBundleLink: async (context) => {
 
-
         try {
             const { userId, bundleId, bundleName, priceAmount } = context.request.body
 
+            const bundleLink = await strapi.service('api::payment-checkout.payment-checkout').generateBundleLink({
+                userId: userId,
+                bundleId: bundleId,
+                bundleName: bundleName,
+                priceAmount: priceAmount
+            })
 
-            context.send({ message: 'Successfully sent email' }, 200)
+            context.send({ message: 'Obtained bundle link', bundleLink: bundleLink }, 200)
         }
         catch (err) {
             context.send({ error: 'Failed to generate checkout link' }, 500)
