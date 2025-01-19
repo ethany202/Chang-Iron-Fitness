@@ -42,7 +42,6 @@ async function startServer() {
 
   app.post("/pull-checkout-link", async (req, res) => {
     try {
-
       const { user_id, imageLink, productType, productName, productID, priceAmount, product } = req.body
       const checkoutLink = await stripePayment.createCheckout(user_id, productType, productName, productID, priceAmount, product)
 
@@ -53,7 +52,6 @@ async function startServer() {
       return res.status(500).json({ error: error })
     }
   })
-
   /**
    * 
    */
@@ -284,6 +282,5 @@ app.get("/handle-purchase", async (req, res) => {
 });
 
 startServer().catch(console.error);
-
 
 
