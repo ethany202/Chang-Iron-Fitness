@@ -5,24 +5,27 @@ module.exports = {
         }
 
         try {
-            // Create a new document
-            const userBundlesDoc = {
-                userId,
-                bundleId,
-            };
+            const existingBundles = await strapi.service('api::mongodb-conn.mongodb-conn').obtainUserBundles(userId)
 
-            const result = await strapi.service('api::mongodb-conn.mongodb-conn').insertUserDoc(userBundlesDoc);
+            if (existingBundles != null) {
+                const result = await strapi.service('api::mongodb-conn.mongodb-conn').updateBundles({
+                    userId: userId,
+                    newBundle: bundleId
+                })
 
-            return {
-                message: "User added successfully",
-                insertedId: result.insertedId,
-            };
+                return { message: 'Inserted successfully', result: result }
+            }
+            else {
+                const userBundlesDoc = { userId: userId, bundles: [bundleId] }
+                const result = await strapi.service('api::mongodb-conn.mongodb-conn').insertUserDoc(userBundlesDoc);
+
+                return { message: 'Inserted successfully', result: result }
+            }
         }
         catch (err) {
             console.error(err)
             throw err;
         }
-
     },
 
     async addPaymentRecord({ userId, productId, priceAmount }) {

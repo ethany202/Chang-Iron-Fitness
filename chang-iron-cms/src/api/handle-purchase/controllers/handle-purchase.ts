@@ -12,7 +12,7 @@ module.exports = {
             const { user_id, bundle_id, price_amount } = context.request.query
             // Need to update service to pull current bundles
             await strapi.service('api::handle-purchase.handle-purchase').updateUserBundles({ userId: user_id, bundleId: bundle_id })
-            await strapi.service('api::mysql-conn.mysql-conn').addPaymentRecord({
+            await strapi.service('api::handle-purchase.handle-purchase').addPaymentRecord({
                 userId: user_id,
                 productId: bundle_id,
                 priceAmount: price_amount
@@ -21,6 +21,7 @@ module.exports = {
             context.send({ message: 'Processed bundle purchase' }, 201)
         }
         catch (error) {
+            console.error(error)
             context.send({ error: 'Failed to generate checkout link' }, 500)
         }
     },
@@ -47,7 +48,7 @@ module.exports = {
                 `;
 
                 await strapi.service('api::mysql-conn.mysql-conn').executeQuery(updateQuery);
-                await strapi.service('api::mysql-conn.mysql-conn').addPaymentRecord({
+                await strapi.service('api::handle-purchase.handle-purchase').addPaymentRecord({
                     userId: user_id,
                     productId: membership_id,
                     priceAmount: price_amount

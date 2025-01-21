@@ -34,7 +34,7 @@ async function createCheckout({ successUrl, productName, priceAmount }) {
 
 module.exports = {
     async generateBundleLink({ userId, bundleId, bundleName, priceAmount }) {
-        let successUrl = `http://localhost:1337/handle-purchase?user_id=${userId}&bundle_id=${bundleId}&price_amount=${priceAmount}`;
+        let successUrl = `http://localhost:1337/api/handle-bundle-purchase?user_id=${userId}&bundle_id=${bundleId}&price_amount=${priceAmount}`;
 
         return createCheckout({
             successUrl: successUrl,
@@ -44,7 +44,7 @@ module.exports = {
     },
 
     async generateMembershipLink({ userId, membershipId, membershipType, priceAmount }) {
-        let successUrl = `http://localhost:1337/handle-purchase?user_id=${userId}&membership_id=${membershipId}&price_amount=${priceAmount}`;
+        let successUrl = `http://localhost:1337/api/handle-membership-purchase?user_id=${userId}&membership_id=${membershipId}&price_amount=${priceAmount}`;
 
         return createCheckout({
             successUrl: successUrl,
