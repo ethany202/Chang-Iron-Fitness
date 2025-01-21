@@ -17,7 +17,7 @@ module.exports = {
         }
     },
 
-    handleMembershipPurcgase: async (context) => {
+    handleMembershipPurchase: async (context) => {
         try {
 
         }
