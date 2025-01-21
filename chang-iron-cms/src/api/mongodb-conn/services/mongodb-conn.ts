@@ -18,15 +18,21 @@ module.exports = {
             return client;
         } catch (err) {
             console.error("Failed to connect to MongoDB", err);
-            process.exit(1);
+            throw err;
         }
     },
-    async insertUserDoc(userBundlesDoc) {
-        const client = await strapi.service('api::mongodb-conn.mongodb-conn').connectToDatabase();
-        const db = client.db("Users");
-        const collection = db.collection("Bundles");
-        const result = await collection.insertOne(userBundlesDoc);
 
-        return result
+    async insertUserDoc(userBundlesDoc) {
+        try {
+            const client = await strapi.service('api::mongodb-conn.mongodb-conn').connectToDatabase();
+            const db = client.db("Users");
+            const collection = db.collection("Bundles");
+            const result = await collection.insertOne(userBundlesDoc);
+
+            return result
+        }
+        catch (err) {
+            throw err;
+        }
     }
 }

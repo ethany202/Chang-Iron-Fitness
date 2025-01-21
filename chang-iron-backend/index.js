@@ -83,7 +83,9 @@ async function startServer() {
       await mysql.executeQuery(insertStatusQuery);
 
       const insertQuery = `INSERT INTO user_creds (user_id, user_email, user_password) VALUES ('${userId}', '${email}', '${hashedPassword}')`;
-      await mysql.executeQuery(insertQuery);
+      const result = await mysql.executeQuery(insertQuery);
+
+      console.log(result)
 
       res.status(201).send({ message: 'User registered successfully', userId });
 

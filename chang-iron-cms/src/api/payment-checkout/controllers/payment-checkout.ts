@@ -8,7 +8,6 @@ module.exports = {
      * @param {*} context: Contains context behind POST request to "/send-message" route 
      */
     generateBundleLink: async (context) => {
-
         try {
             const { userId, bundleId, bundleName, priceAmount } = context.request.body
 
@@ -27,6 +26,20 @@ module.exports = {
     },
 
     generateMembershipLink: async (context) => {
+        try {
+            const { userId, membershipId, membershipType, priceAmount } = context.request.body
 
+            const memnershipLink = await strapi.service('api::payment-checkout.payment-checkout').generateMembershipLink({
+                userId: userId,
+                membershipId: membershipId,
+                membershipType: membershipType,
+                priceAmount: priceAmount
+            })
+
+            context.send({ message: 'Obtained membership link', membershipLink: memnershipLink }, 200)
+        }
+        catch (err) {
+            context.send({ error: 'Failed to generate checkout link' }, 500)
+        }
     }
 }
