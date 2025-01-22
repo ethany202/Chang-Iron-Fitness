@@ -1,13 +1,13 @@
 'use strict'
 
 module.exports = {
-  async login(req: any, res: any) {
+  async login(ctx) {
     try {
-      const { email, password } = req.body;
+      const { email, password } = ctx.request.body;
 
       // Validate email and password
       if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
+        ctx.send({ error: 'Email and password are required' }, 400)
       }
 
       // Call service to validate the user
@@ -16,13 +16,15 @@ module.exports = {
 
       // Respond based on the service result
       if (!result.success) {
-        return res.status(result.status).json({ error: result.message });
+        ctx.send({ error: result.message }, result.status)
+
       }
 
-      return res.status(200).send({ message: 'User logged in successfully' });
+      ctx.send('User logged in successfully', 200)
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+      ctx.send({ error: 'Internal server error' }, 500)
+
     }
   },
 };

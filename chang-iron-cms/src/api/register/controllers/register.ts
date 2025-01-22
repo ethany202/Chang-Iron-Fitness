@@ -10,20 +10,17 @@ export default {
       const result = await registerService.registerUser(email, first_name, last_name, password);
 
       if (!result.success) {
-        ctx.status = result.status;
-        return (ctx.body = { error: result.message });
+        ctx.send({ error: result.message }, result.status)
       }
 
       // Respond with success
-      ctx.status = result.status;
-      ctx.body = {
+      ctx.send({
         message: result.message,
         userId: result.userId,
-      };
+      }, result.status)
+
     } catch (error) {
-      console.error(error);
-      ctx.status = 500;
-      ctx.body = { error: "Internal server error" };
+      ctx.send({ error: "Internal server error" }, 500)
     }
   },
 };
