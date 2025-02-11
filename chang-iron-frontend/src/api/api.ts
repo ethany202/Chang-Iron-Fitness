@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: `${process.env.REACT_APP_BACKEND_URL}/`,
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}/api`,
     timeout: 10000,
 });
 
@@ -41,4 +41,15 @@ export const postRegister = async (userInfo: {
 }) => {
     const path = "register"
     return await postRequest(userInfo, path)
+}
+
+export const getRequest = async (path: string) => {
+    try {
+        const response = await api.get(path)
+        return response
+    }
+    catch (err) {
+        console.error(err)
+        return {}
+    }
 }
